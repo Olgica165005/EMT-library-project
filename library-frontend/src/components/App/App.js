@@ -5,6 +5,7 @@ import Books from '../Books/BookList/books';
 import BookAdd from '../Books/BookAdd/bookAdd';
 import Categories from '../Categories/categories';
 import Header from '../Header/header';
+import BookEdit from '../Books/BookEdit/bookEdit';
 
 class App extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class App extends Component {
       books: [],
       categories: [],
       authors: [],
+      selectedBook: {},
     };
   }
 
@@ -43,6 +45,14 @@ class App extends Component {
     LibraryService.addBook(name, category, authorId, availableCopies).then(this.loadBooks);
   };
 
+  getBook = (id) => {
+    LibraryService.getBook(id).then(({ data }) => this.setState({ selectedBook: data }));
+  };
+
+  editBook = (id, name, category, authorId, availableCopies) => {
+    LibraryService.editBook(id, name, category, authorId, availableCopies).then(this.loadBooks);
+  };
+
   render() {
     return (
       <Router>
@@ -62,9 +72,27 @@ class App extends Component {
                 )}
               />
               <Route
+                path='/books/edit/:id'
+                exact
+                render={() => (
+                  <BookEdit
+                    book={this.state.selectedBook}
+                    categories={this.state.categories}
+                    authors={this.state.authors}
+                    onEditBook={this.editBook}
+                  />
+                )}
+              />
+              <Route
                 path='/books'
                 exact
-                render={() => <Books books={this.state.books} onDelete={this.deleteBook} />}
+                render={() => (
+                  <Books
+                    books={this.state.books}
+                    onDelete={this.deleteBook}
+                    onEdit={this.getBook}
+                  />
+                )}
               />
               <Route
                 path='/categories'

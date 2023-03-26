@@ -1,3 +1,6 @@
+DELETE FROM book;
+ALTER SEQUENCE book_id_seq RESTART WITH 1;
+
 DELETE FROM author;
 ALTER SEQUENCE author_id_seq RESTART WITH 1;
 

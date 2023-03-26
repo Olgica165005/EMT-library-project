@@ -2,7 +2,7 @@ import React from 'react';
 import BookItem from '../BookItem/bookItem';
 import { Link } from 'react-router-dom';
 
-const Books = ({ books, onDelete }) => (
+const Books = ({ books, onDelete, onEdit }) => (
   <div className='container mm-4 mt-5'>
     <div className='row'>
       <div className='table-responsive'>
@@ -17,7 +17,7 @@ const Books = ({ books, onDelete }) => (
           </thead>
           <tbody>
             {books.map((book) => (
-              <BookItem key={`book-${book.id}`} book={book} onDelete={onDelete} />
+              <BookItem key={`book-${book.id}`} book={book} onDelete={onDelete} onEdit={onEdit} />
             ))}
           </tbody>
         </table>

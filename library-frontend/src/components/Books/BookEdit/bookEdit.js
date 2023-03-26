@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-const BookAdd = ({ categories, authors, onAddBook }) => {
+const BookEdit = ({ book, categories, authors, onEditBook }) => {
   const history = useHistory();
-  const [formData, setFormData] = useState({
+  const [formData, updateFormData] = React.useState({
     name: '',
-    category: 'NOVEL',
-    authorId: 1,
+    category: 0,
+    authorId: 0,
     availableCopies: 0,
   });
 
   const handleChange = (e) => {
-    setFormData({
+    updateFormData({
       ...formData,
       [e.target.name]: e.target.value.trim(),
     });
@@ -19,12 +19,13 @@ const BookAdd = ({ categories, authors, onAddBook }) => {
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    const name = formData.name;
-    const category = formData.category;
-    const authorId = formData.authorId;
-    const availableCopies = formData.availableCopies;
+    const name = formData.name !== '' ? formData.name : book.name;
+    const category = formData.category !== 0 ? formData.category : book.category;
+    const authorId = formData.authorId !== 0 ? formData.authorId : book.author.id;
+    const availableCopies =
+      formData.availableCopies !== 0 ? formData.availableCopies : book.availableCopies;
 
-    onAddBook(name, category, authorId, availableCopies);
+    onEditBook(book.id, name, category, authorId, availableCopies);
     history.push('/books');
   };
 
@@ -32,7 +33,7 @@ const BookAdd = ({ categories, authors, onAddBook }) => {
     <div className='row mt-5'>
       <div className='col-md-5'>
         <form onSubmit={onFormSubmit}>
-          <div className='form-group mt-3'>
+          <div className='form-group'>
             <label htmlFor='name' className='mb-1'>
               Book name
             </label>
@@ -41,16 +42,15 @@ const BookAdd = ({ categories, authors, onAddBook }) => {
               className='form-control'
               id='name'
               name='name'
-              required
-              placeholder='Enter book name'
+              placeholder={book.name}
               onChange={handleChange}
             />
           </div>
           <div className='form-group mt-3'>
             <label className='mb-1'>Category</label>
             <select name='category' className='form-control' onChange={handleChange}>
-              {categories?.map((category) => (
-                <option key={category} value={category}>
+              {categories.map((category) => (
+                <option selected={book.category === category} value={category}>
                   {category}
                 </option>
               ))}
@@ -59,16 +59,15 @@ const BookAdd = ({ categories, authors, onAddBook }) => {
           <div className='form-group mt-3'>
             <label className='mb-1'>Author</label>
             <select name='authorId' className='form-control' onChange={handleChange}>
-              {authors?.map((author) => (
-                <option
-                  key={`author-${author.id}`}
-                  value={author.id}
-                >{`${author.name} ${author.surname}`}</option>
+              {authors.map((author) => (
+                <option selected={book.author?.id === author.id} value={author.id}>
+                  {`${author.name} ${author.surname}`}
+                </option>
               ))}
             </select>
           </div>
           <div className='form-group mt-3'>
-            <label htmlFor='quantity' className='mb-1'>
+            <label htmlFor='availableCopies' className='mb-1'>
               Available copies
             </label>
             <input
@@ -76,8 +75,7 @@ const BookAdd = ({ categories, authors, onAddBook }) => {
               className='form-control'
               id='availableCopies'
               name='availableCopies'
-              placeholder='Available copies'
-              required
+              placeholder={book.availableCopies}
               onChange={handleChange}
             />
           </div>
@@ -90,4 +88,4 @@ const BookAdd = ({ categories, authors, onAddBook }) => {
   );
 };
 
-export default BookAdd;
+export default BookEdit;

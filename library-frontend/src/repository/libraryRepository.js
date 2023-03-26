@@ -12,6 +12,14 @@ const LibraryService = {
       authorId: authorId,
       availableCopies: availableCopies,
     }),
+  editBook: (id, name, category, authorId, availableCopies) =>
+    axios.put(`/books/edit/${id}`, {
+      name: name,
+      category: category,
+      authorId: authorId,
+      availableCopies: availableCopies,
+    }),
+  getBook: (id) => axios.get(`/books/${id}`),
 };
 
 export default LibraryService;

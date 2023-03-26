@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const BookItem = ({ book, onDelete, onEdit }) => (
+const BookItem = ({ book, onDelete, onEdit, onMarkAsRented }) => (
   <tr>
     <td>{book.name}</td>
     <td>{book.category}</td>
@@ -16,6 +16,15 @@ const BookItem = ({ book, onDelete, onEdit }) => (
       <Link className='btn btn-info' onClick={() => onEdit(book.id)} to={`/books/edit/${book.id}`}>
         Edit
       </Link>
+    </td>
+    <td>
+      <button
+        className={`btn ${book.availableCopies > 0 ? 'btn-warning' : 'btn-secondary'}`}
+        onClick={() => onMarkAsRented(book.id)}
+        disabled={book.availableCopies === 0}
+      >
+        Mark as rented
+      </button>
     </td>
   </tr>
 );

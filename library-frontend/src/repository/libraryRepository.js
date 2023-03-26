@@ -20,6 +20,7 @@ const LibraryService = {
       availableCopies: availableCopies,
     }),
   getBook: (id) => axios.get(`/books/${id}`),
+  markBookAsRented: (id) => axios.patch(`/books/markAsRented/${id}`),
 };
 
 export default LibraryService;

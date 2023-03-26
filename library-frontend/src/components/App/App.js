@@ -53,6 +53,10 @@ class App extends Component {
     LibraryService.editBook(id, name, category, authorId, availableCopies).then(this.loadBooks);
   };
 
+  markBookAsRented = (id) => {
+    LibraryService.markBookAsRented(id).then(this.loadBooks);
+  };
+
   render() {
     return (
       <Router>
@@ -91,6 +95,7 @@ class App extends Component {
                     books={this.state.books}
                     onDelete={this.deleteBook}
                     onEdit={this.getBook}
+                    onMarkAsRented={this.markBookAsRented}
                   />
                 )}
               />

@@ -42,7 +42,7 @@ const BookEdit = ({ book, categories, authors, onEditBook }) => {
               className='form-control'
               id='name'
               name='name'
-              placeholder={book.name}
+              defaultValue={book.name}
               onChange={handleChange}
             />
           </div>
@@ -50,7 +50,11 @@ const BookEdit = ({ book, categories, authors, onEditBook }) => {
             <label className='mb-1'>Category</label>
             <select name='category' className='form-control' onChange={handleChange}>
               {categories.map((category) => (
-                <option selected={book.category === category} value={category}>
+                <option
+                  key={`category-option-${category}`}
+                  selected={book.category === category}
+                  value={category}
+                >
                   {category}
                 </option>
               ))}
@@ -60,7 +64,11 @@ const BookEdit = ({ book, categories, authors, onEditBook }) => {
             <label className='mb-1'>Author</label>
             <select name='authorId' className='form-control' onChange={handleChange}>
               {authors.map((author) => (
-                <option selected={book.author?.id === author.id} value={author.id}>
+                <option
+                  key={`author-option-${author.id}`}
+                  selected={book.author?.id === author.id}
+                  value={author.id}
+                >
                   {`${author.name} ${author.surname}`}
                 </option>
               ))}
@@ -75,7 +83,7 @@ const BookEdit = ({ book, categories, authors, onEditBook }) => {
               className='form-control'
               id='availableCopies'
               name='availableCopies'
-              placeholder={book.availableCopies}
+              defaultValue={book.availableCopies}
               onChange={handleChange}
             />
           </div>

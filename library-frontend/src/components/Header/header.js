@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const Header = () => (
   <header>
-    <nav className='navbar navbar-expand-md navbar-dark navbar-fixed bg-dark px-5'>
+    <nav className='navbar navbar-expand-md navbar-dark navbar-fixed bg-primary px-5'>
       <a className='navbar-brand' href='/books'>
         Library
       </a>

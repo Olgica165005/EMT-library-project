@@ -81,7 +81,7 @@ const BookAdd = ({ categories, authors, onAddBook }) => {
               onChange={handleChange}
             />
           </div>
-          <button id='submit' type='submit' className='btn btn-primary mt-5'>
+          <button id='submit' type='submit' className='btn btn-primary text-white mt-5'>
             Submit
           </button>
         </form>

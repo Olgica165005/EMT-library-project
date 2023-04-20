@@ -6,6 +6,7 @@ import BookAdd from '../Books/BookAdd/bookAdd';
 import Categories from '../Categories/categories';
 import Header from '../Header/header';
 import BookEdit from '../Books/BookEdit/bookEdit';
+import PageNotFound from '../PageNotFound/pageNotFound';
 
 class App extends Component {
   constructor(props) {
@@ -88,7 +89,7 @@ class App extends Component {
                 )}
               />
               <Route
-                path='/books'
+                path={['/books', '/']}
                 exact
                 render={() => (
                   <Books
@@ -104,7 +105,8 @@ class App extends Component {
                 exact
                 render={() => <Categories categories={this.state.categories} />}
               />
-              <Redirect to='/books' />
+              <Route path='/404' exact render={() => <PageNotFound />} />
+              <Redirect to='/404' />
             </Switch>
           </div>
         </main>

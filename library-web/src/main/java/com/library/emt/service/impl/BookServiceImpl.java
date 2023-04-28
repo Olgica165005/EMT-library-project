@@ -37,7 +37,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Page<Book> findAllWithPagination(Pageable pageable) {
-        return this.bookRepository.findAll(pageable);
+        return this.bookRepository.findAllByOrderByIdAsc(pageable);
     }
 
     @Override

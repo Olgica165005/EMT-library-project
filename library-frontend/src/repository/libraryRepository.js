@@ -1,7 +1,8 @@
 import axios from '../custom-axios/axios';
 
 const LibraryService = {
-  fetchBooks: () => axios.get('/books'),
+  fetchBooksPaginated: (pageNumber, size) =>
+    axios.get(`/books/paginated?page=${pageNumber}&size=${size}`),
   fetchCategories: () => axios.get('/categories'),
   fetchAuthors: () => axios.get('/authors'),
   deleteBook: (id) => axios.delete(`/books/delete/${id}`),

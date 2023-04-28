@@ -5,43 +5,28 @@ import ReactPaginate from 'react-paginate';
 import BookListEmpty from '../BookListEmpty/bookListEmpty';
 
 class Books extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      page: 0,
-      size: 5,
-    };
-  }
-
   handlePageChange = (data) => {
-    this.setState({
-      page: data.selected,
-    });
+    this.props.onChangePage(data.selected);
   };
 
-  renderPage = (offset, nextPageOffset) => {
+  renderBooks = () => {
     const { books, onDelete, onEdit, onMarkAsRented } = this.props;
 
-    return books
-      .map((book) => (
-        <BookItem
-          key={`book-${book.id}`}
-          book={book}
-          onDelete={onDelete}
-          onEdit={onEdit}
-          onMarkAsRented={onMarkAsRented}
-        />
-      ))
-      .filter((book, index) => index >= offset && index < nextPageOffset);
+    return books.map((book) => (
+      <BookItem
+        key={`book-${book.id}`}
+        book={book}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        onMarkAsRented={onMarkAsRented}
+      />
+    ));
   };
 
   renderTable = () => {
-    const { books } = this.props;
-    const { page, size } = this.state;
-    const offset = size * page;
-    const nextPageOffset = offset + size;
-    const pageCount = Math.ceil(books.length / size);
+    const {
+      pagination: { pageNumber, totalPages },
+    } = this.props;
 
     return (
       <>
@@ -55,10 +40,14 @@ class Books extends Component {
                 <th scope='col'>Available copies</th>
               </tr>
             </thead>
-            <tbody>{this.renderPage(offset, nextPageOffset)}</tbody>
+            <tbody>{this.renderBooks()}</tbody>
           </table>
         </div>
         <ReactPaginate
+          forcePage={pageNumber}
+          pageCount={totalPages}
+          marginPagesDisplayed={2}
+          onPageChange={this.handlePageChange}
           previousLabel='< Back'
           nextLabel='Next >'
           breakLabel='...'
@@ -70,10 +59,6 @@ class Books extends Component {
           previousLinkClassName='page-link'
           nextClassName='page-item'
           nextLinkClassName='page-link'
-          pageCount={pageCount}
-          pageRangeDisplayed={size}
-          marginPagesDisplayed={2}
-          onPageChange={this.handlePageChange}
           className='pagination justify-content-center mt-3'
           activeClassName='active'
         />
@@ -92,7 +77,7 @@ class Books extends Component {
           <div className='col mt-5'>
             <div className='row text-center'>
               <div className='col-sm-12 col-md-12'>
-                <Link className='btn btn-block btn-dark' to='/books/add'>
+                <Link className='btn btn-block btn-primary text-white' to='/books/add'>
                   Add new book
                 </Link>
               </div>

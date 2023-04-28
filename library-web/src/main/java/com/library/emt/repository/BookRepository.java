@@ -15,6 +15,6 @@ public interface BookRepository extends JpaRepository<Book, Long>  {
 
     void deleteByName(String name);
 
-    Page<Book> findAll(Pageable pageable);
+    Page<Book> findAllByOrderByIdAsc(Pageable pageable);
 
 }

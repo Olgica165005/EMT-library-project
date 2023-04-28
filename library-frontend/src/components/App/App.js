@@ -17,17 +17,31 @@ class App extends Component {
       categories: [],
       authors: [],
       selectedBook: {},
+      pagination: { pageNumber: 0, size: 5, totalPages: 0 },
     };
   }
 
   componentDidMount() {
-    this.loadBooks();
+    this.loadBooksPaginated();
     this.loadCategories();
     this.loadAuthors();
   }
 
-  loadBooks = () => {
-    LibraryService.fetchBooks().then(({ data }) => this.setState({ books: data }));
+  loadBooksPaginated = () => {
+    const { pageNumber, size } = this.state.pagination;
+    LibraryService.fetchBooksPaginated(pageNumber, size).then(({ data }) =>
+      this.setState({
+        books: data.content,
+        pagination: { pageNumber, size, totalPages: data.totalPages },
+      }),
+    );
+  };
+
+  changePage = (pageNumber) => {
+    this.setState(
+      { pagination: { ...this.state.pagination, pageNumber } },
+      this.loadBooksPaginated,
+    );
   };
 
   loadCategories = () => {
@@ -39,11 +53,11 @@ class App extends Component {
   };
 
   deleteBook = (id) => {
-    LibraryService.deleteBook(id).then(this.loadBooks);
+    LibraryService.deleteBook(id).then(this.loadBooksPaginated);
   };
 
   addBook = (name, category, authorId, availableCopies) => {
-    LibraryService.addBook(name, category, authorId, availableCopies).then(this.loadBooks);
+    LibraryService.addBook(name, category, authorId, availableCopies).then(this.loadBooksPaginated);
   };
 
   getBook = (id) => {
@@ -51,11 +65,13 @@ class App extends Component {
   };
 
   editBook = (id, name, category, authorId, availableCopies) => {
-    LibraryService.editBook(id, name, category, authorId, availableCopies).then(this.loadBooks);
+    LibraryService.editBook(id, name, category, authorId, availableCopies).then(
+      this.loadBooksPaginated,
+    );
   };
 
   markBookAsRented = (id) => {
-    LibraryService.markBookAsRented(id).then(this.loadBooks);
+    LibraryService.markBookAsRented(id).then(this.loadBooksPaginated);
   };
 
   render() {
@@ -94,9 +110,11 @@ class App extends Component {
                 render={() => (
                   <Books
                     books={this.state.books}
+                    pagination={this.state.pagination}
                     onDelete={this.deleteBook}
                     onEdit={this.getBook}
                     onMarkAsRented={this.markBookAsRented}
+                    onChangePage={this.changePage}
                   />
                 )}
               />
